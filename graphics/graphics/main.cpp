@@ -35,8 +35,8 @@ GLuint selectedProgram;
 
 // Movement/Animation values
 struct Movement {
-	GLfloat angle_x; 
-	GLfloat angle_y; 
+	GLfloat angle_x;
+	GLfloat angle_y;
 	GLfloat angle_z;
 	GLfloat angle_inc_x;
 	GLfloat angle_inc_y;
@@ -70,7 +70,7 @@ Plane plane;
 GLuint planeVertices;
 
 // Create instance of movement
-Movement movement; 
+Movement movement;
 
 // Model positioning values
 GLfloat x, y, z;
@@ -124,7 +124,7 @@ GLuint lightProperties;
 
 GLuint emitmode;
 
-// setDefaultValues intializing variables with there default values; this is used at start and whenever the user stats a reset 
+// setDefaultValues intializing variables with there default values; this is used at start and whenever the user stats a reset
 void setDefaultValues() {
 
 	// Default camera properties
@@ -136,8 +136,8 @@ void setDefaultValues() {
 	camera.angle_z = 0;
 	camera.radius = 0;
 	camera.aspect_ratio = 1024.f / 768.f;
-	
-	
+
+
 
 	// Default coords for positioning
 	x = y = z = 0;
@@ -220,7 +220,7 @@ void setDefaultValues() {
 // printControls prints the user controls to the debug console.
 void printControls() {
 
-	
+
 	std::cout << "               Controls" << std::endl;
 	std::cout << "_______________________________________" << std::endl;
 	std::cout << "|     Keys   |         Function       |" << std::endl;
@@ -252,7 +252,7 @@ void printControls() {
 	std::cout << "|      U     |     Scale Up           |" << std::endl;
 	std::cout << "|      Y     |     Scale Down         |" << std::endl;
 	std::cout << "|_____________________________________|" << std::endl;
-	std::cout << "|	   Light Soure Controls           	|" << std::endl;
+	std::cout << "|	   Light Source Controls           	|" << std::endl;
 	std::cout << "|_____________________________________|" << std::endl;
 	std::cout << "|      5     |     Move Down          |" << std::endl;
 	std::cout << "|      6     |     Move Up            |" << std::endl;
@@ -297,10 +297,10 @@ void updateConsole() {
 
 // Intitilization
 void init(GLWrapper *glw) {
-	
+
 	setDefaultValues();
 	selectedProgram = 1;
-	
+
 	// Generate index (name) for one vertex array object
 	glGenVertexArrays(1, &vao);
 
@@ -308,7 +308,7 @@ void init(GLWrapper *glw) {
 	glBindVertexArray(vao);
 
 
-	
+
 	// Create Tetra vertices
 	tetra1vertices = gear.makeClockPartVBO(32, 32, gear1.colour);
 	gearType2vertices = gearType2.makeClockPartVBO(32, 32, gear2.colour);
@@ -341,7 +341,7 @@ void init(GLWrapper *glw) {
 		lightposID = glGetUniformLocation(program[i], "lightpos");
 		normalmatrixID = glGetUniformLocation(program[i], "normalmatrix");
 	}
-	
+
 
 }
 
@@ -353,7 +353,7 @@ void display() {
 	// Clear the colour and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearDepth(1);
-	// Enable the Depth 
+	// Enable the Depth
 	glEnable(GL_DEPTH_TEST);
 
 	glDepthFunc(GL_LESS);
@@ -366,7 +366,7 @@ void display() {
 
 	// Intialize the default model transformations as a fallback
 	glm::mat4 model = glm::mat4(1.0f);
-	
+
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	glm::mat4 Projection = glm::perspective(30.0f, camera.aspect_ratio, 0.1f, 100.0f);
@@ -383,7 +383,7 @@ void display() {
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, &View[0][0]);
 	glUniformMatrix4fv(projectionID, 1, GL_FALSE, &Projection[0][0]);
 
-	
+
 
 	// Define the light position and transform by the view matrix
 
@@ -398,7 +398,7 @@ void display() {
 	// Send the light MVP to the vertex shader
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, &View[0][0]);
-	glUniformMatrix4fv(projectionID, 1, GL_FALSE, &Projection[0][0]); 
+	glUniformMatrix4fv(projectionID, 1, GL_FALSE, &Projection[0][0]);
 	glUniformMatrix3fv(normalmatrixID, 1, GL_FALSE, &normalmatrix[0][0]);	 // send the normal matrix
 	glUniform4fv(lightposID, 1, glm::value_ptr(lightpos)); // send the light position to the vertex shader
 
@@ -547,7 +547,7 @@ void display() {
 		plane.drawPlane();
 
 		// Cube 1
-		
+
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(x - 1.3, y + 0.1, z));
 		model = glm::scale(model, glm::vec3(scale * 0.5, scale * 0.5, scale * 0.5));
@@ -573,9 +573,9 @@ void display() {
 		glUniformMatrix3fv(normalmatrixID, 1, GL_FALSE, &normalmatrix[0][0]);
 		cube.drawCube();
 
-	
 
-		
+
+
 	glDisableVertexAttribArray(0);
 	glUseProgram(0);
 
@@ -604,7 +604,7 @@ static void inputHandler(int key) {
 	// speed down
 	if (key == GLFW_KEY_Q) movement.angle_inc_y += 0.5f;
 
-	/* 
+	/*
 		Light movement
 	*/
 
@@ -649,28 +649,28 @@ static void inputHandler(int key) {
 		// limit zoom out
 		if (camera.pos_z < 8) camera.pos_z += 0.1f; // Zoom Out
 	}
-	
+
 	// Move camera right
 	if (key == GLFW_KEY_RIGHT) {
 		//camera.pos_x += 0.1f;
 		camera.pos_x += 0.1f;
-		
+
 	}
 	// Move camera left
 	if (key == GLFW_KEY_LEFT) {
 		camera.pos_x -= 0.1f;
-		
+
 	}
 
 	// Move camera up
 	if (key == GLFW_KEY_UP) {
 		camera.pos_y += 0.1f;
-		
+
 	}
 	// Move camera down
 	if (key == GLFW_KEY_DOWN) {
 		camera.pos_y -= 0.1f;
-		
+
 	}
 
 	if (key == GLFW_KEY_W) {
@@ -683,11 +683,11 @@ static void inputHandler(int key) {
 	if (key == GLFW_KEY_A) {
 		camera.angle_x -= 0.1f;
 	}
-	
+
 	if (key == GLFW_KEY_D) {
-		
+
 		camera.angle_x += 0.1;
-		
+
 	}
 
 	// Reset speed and camera position
@@ -943,10 +943,10 @@ static void reshape(GLFWwindow* window, int w, int h)
 
 
 int main(int argc, char* argv[]) {
-	
+
 	GLWrapper *glw = new GLWrapper(
 		1024,				// Window width
-		768,				// Window height 
+		768,				// Window height
 		"Gears of Clock (View console for instructions and state information)"	// Window title
 	);
 	glw->setErrorCallback(error_callback);
@@ -965,7 +965,7 @@ int main(int argc, char* argv[]) {
 	glw->setRenderer(display);
 	glw->setKeyCallback(key_callback); // Set callback for keyboard shortcuts
 	glw->setReshapeCallback(reshape); // Set callback for handling window resizing
-	
+
 	//Initialize the glw wrapper
 	init(glw);
 
@@ -976,5 +976,3 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
-
-
